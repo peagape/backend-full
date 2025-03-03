@@ -129,6 +129,17 @@ exports.deleteUser = (req, res) => {
 //     });
 //   };
 
+/**
+ * Retorna informações do usuário e seu plano mais recente baseado no MAC ID.
+ * 
+ * @param {Object} req - Objeto de requisição do Express.
+ * @param {Object} res - Objeto de resposta do Express.
+ * @property {string} macid - O MAC ID do usuário.
+ * @returns {Object} Objeto de resposta com informações do usuário e os detalhes do plano mais recente.
+ *                   Inclui data de compra, data de início, data de término, status da assinatura,
+ *                   nome do plano, tipo do plano, preço e status do plano.
+ */
+
 exports.getUserInfo = (req, res) => {
     const macid = req.params.macid;
     const sql = `
