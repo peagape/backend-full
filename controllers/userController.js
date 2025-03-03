@@ -20,7 +20,7 @@ exports.createUser = (req, res) => {
   const token = req.headers.authorization;
     if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
 
-    const { nome, email, macid, cpf, status, password } = req.body;
+    const { nome, email, macid, board, cpf, status, password } = req.body;
     
     if (!nome || !email || !macid) {
       return res.status(400).json({ error: "nome, email e macid são obrigatórios" });
@@ -37,9 +37,9 @@ exports.createUser = (req, res) => {
       }
       
       const dataCadastro = moment().tz("America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss');
-      const sql = `INSERT INTO usuarios (nome, email, macid, cpf, status, password, data_cadastro)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)`;
-      const params = [nome, email, macid, cpf || null, status || null, password || null, dataCadastro];
+      const sql = `INSERT INTO usuarios (nome, email, macid, board, cpf, status, password, data_cadastro)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      const params = [nome, email, macid, board, cpf || null, status || null, password || null, dataCadastro];
       
       db.run(sql, params, function(err) {
         if (err) {
@@ -51,7 +51,7 @@ exports.createUser = (req, res) => {
   }else{
     res.status(401).json({ error: "Nao autorizado" });
   }
-  
+
   };
 
 

@@ -17,6 +17,7 @@ db.serialize(() => {
     nome TEXT NOT NULL,
     email TEXT NOT NULL,
     macid TEXT NOT NULL,
+    board TEXT,
     data_cadastro TEXT DEFAULT (datetime('now')),
     cpf TEXT,
     status TEXT,
