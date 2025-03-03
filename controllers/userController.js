@@ -27,8 +27,8 @@ exports.createUser = (req, res) => {
     }
     
     // Verifica se o email ou macid já existem
-    const checkSql = "SELECT * FROM usuarios WHERE email = ? OR macid = ?";
-    db.get(checkSql, [email, macid], (err, row) => {
+    const checkSql = "SELECT * FROM usuarios WHERE email = ? OR macid = ? OR board = ?";
+    db.get(checkSql, [email, macid, board], (err, row) => {
       if (err) {
         return res.status(400).json({ error: err.message });
       }
