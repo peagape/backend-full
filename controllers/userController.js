@@ -51,7 +51,7 @@ exports.createUser = (req, res) => {
 exports.getUsers = (req, res) => {
   // verifcar se tem o token passado via header
   const token = req.headers.authorization;
-  if (token) {
+  if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
     const sql = "SELECT * FROM usuarios";
     db.all(sql, [], (err, rows) => {
       if (err) res.status(400).json({ error: err.message });
