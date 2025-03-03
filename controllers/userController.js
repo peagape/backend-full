@@ -17,6 +17,9 @@ const moment = require('moment-timezone');
  * @returns {Object} Objeto de resposta com um status de 201 e o ID do usuário recém-criado.
  */
 exports.createUser = (req, res) => {
+  const token = req.headers.authorization;
+    if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
+
     const { nome, email, macid, cpf, status, password } = req.body;
     
     if (!nome || !email || !macid) {
@@ -45,6 +48,10 @@ exports.createUser = (req, res) => {
         res.json({ uid: this.lastID });
       });
     });
+  }else{
+    res.status(401).json({ error: "Nao autorizado" });
+  }
+  
   };
 
 
@@ -71,30 +78,42 @@ exports.getUsers = (req, res) => {
  * @returns {Object} Objeto de resposta com um status de 200 e o usuário.
  */
 exports.getUserById = (req, res) => {
-  const uid = req.params.uid;
-  const sql = "SELECT * FROM usuarios WHERE uid = ?";
-  db.get(sql, [uid], (err, row) => {
-    if (err) res.status(400).json({ error: err.message });
-    else res.json(row);
-  });
+    // verifcar se tem o token passado via header
+  const token = req.headers.authorization;
+    if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
+      const uid = req.params.uid;
+      const sql = "SELECT * FROM usuarios WHERE uid = ?";
+      db.get(sql, [uid], (err, row) => {
+        if (err) res.status(400).json({ error: err.message });
+        else res.json(row);
+      });
+    }else{
+      res.status(401).json({ error: "Nao autorizado" });
+    }
 };
 
 exports.updateUser = (req, res) => {
-  const uid = req.params.uid;
-  const { nome, email, macid, cpf, status, password } = req.body;
-  const sql = `UPDATE usuarios SET 
-                nome = COALESCE(?, nome),
-                email = COALESCE(?, email),
-                macid = COALESCE(?, macid),
-                cpf = COALESCE(?, cpf),
-                status = COALESCE(?, status),
-                password = COALESCE(?, password)
-              WHERE uid = ?`;
-  const params = [nome, email, macid, cpf, status, password, uid];
-  db.run(sql, params, function(err) {
-    if (err) res.status(400).json({ error: err.message });
-    else res.json({ updatedID: uid });
-  });
+
+  const token = req.headers.authorization;
+  if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
+    const uid = req.params.uid;
+    const { nome, email, macid, cpf, status, password } = req.body;
+    const sql = `UPDATE usuarios SET 
+                  nome = COALESCE(?, nome),
+                  email = COALESCE(?, email),
+                  macid = COALESCE(?, macid),
+                  cpf = COALESCE(?, cpf),
+                  status = COALESCE(?, status),
+                  password = COALESCE(?, password)
+                WHERE uid = ?`;
+    const params = [nome, email, macid, cpf, status, password, uid];
+    db.run(sql, params, function(err) {
+      if (err) res.status(400).json({ error: err.message });
+      else res.json({ updatedID: uid });
+    });
+  }else{
+    res.status(401).json({ error: "Nao autorizado" });
+  }
 };
 
 /**
@@ -106,12 +125,17 @@ exports.updateUser = (req, res) => {
  * @returns {Object} Objeto de resposta com um status de 200 e o ID do usuário excluído.
  */
 exports.deleteUser = (req, res) => {
-  const uid = req.params.uid;
-  const sql = "DELETE FROM usuarios WHERE uid = ?";
-  db.run(sql, uid, function(err) {
-    if (err) res.status(400).json({ error: err.message });
-    else res.json({ deletedID: uid });
-  });
+  const token = req.headers.authorization;
+    if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
+      const uid = req.params.uid;
+      const sql = "DELETE FROM usuarios WHERE uid = ?";
+      db.run(sql, uid, function(err) {
+        if (err) res.status(400).json({ error: err.message });
+        else res.json({ deletedID: uid });
+      });
+}else{
+  res.status(401).json({ error: "Nao autorizado" });
+}
 };
 
 
@@ -149,6 +173,9 @@ exports.deleteUser = (req, res) => {
  */
 
 exports.getUserInfo = (req, res) => {
+  const token = req.headers.authorization;
+    if (token==='Bearer 34e67a828393b5f7687f8c67c668769684a6d6ecacdb8367de34869c827bf748') {
+
     const macid = req.params.macid;
     const sql = `
       SELECT 
@@ -204,4 +231,7 @@ exports.getUserInfo = (req, res) => {
       if (err) res.status(400).json({ error: err.message });
       else res.json(row);
     });
+  }else{
+    res.status(401).json({ error: "Nao autorizado" });
+  }
   };
