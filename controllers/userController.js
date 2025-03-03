@@ -29,7 +29,7 @@ exports.createUser = (req, res) => {
         return res.status(400).json({ error: err.message });
       }
       if (row) {
-        return res.status(400).json({ error: "Oops, tente novamente mais tarde!" }); //Email ou MAC ID já cadastrado
+        return res.status(400).json({ error: "Oops" }); //Email ou MAC ID já cadastrado
       }
       
       const dataCadastro = moment().tz("America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss');
