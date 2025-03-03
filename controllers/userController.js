@@ -1,4 +1,5 @@
 // controllers/userController.js
+const e = require('express');
 const db = require('../config/db');
 const moment = require('moment-timezone');
 
@@ -46,12 +47,19 @@ exports.createUser = (req, res) => {
     });
   };
 
+
 exports.getUsers = (req, res) => {
-  const sql = "SELECT * FROM usuarios";
-  db.all(sql, [], (err, rows) => {
-    if (err) res.status(400).json({ error: err.message });
-    else res.json(rows);
-  });
+  // verifcar se tem o token passado via header
+  const token = req.headers.authorization;
+  if (token) {
+    const sql = "SELECT * FROM usuarios";
+    db.all(sql, [], (err, rows) => {
+      if (err) res.status(400).json({ error: err.message });
+      else res.json(rows);
+    });
+  }else{
+    res.status(401).json({ error: "Nao autorizado" });
+  }
 };
 
 /**
