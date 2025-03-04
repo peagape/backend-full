@@ -229,8 +229,17 @@ exports.getUserInfo = (req, res) => {
     `;
     db.get(sql, [macid], (err, row) => {
       if (err) res.status(400).json({ error: err.message });
-      else res.json(row);
+      else 
+      
+      if (row) {
+        delete row.cpf;
+        delete row.password;
+      }
+      res.json(row);
+
+
     });
+
   }else{
     res.status(401).json({ error: "Nao autorizado" });
   }

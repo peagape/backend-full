@@ -87,10 +87,12 @@ exports.createPayment = (req, res) => {
          * - transactionAmount: valor da transação (opcional);
          * - transactionId: identificador da transação (opcional).
          */
+
+        const description = `Assinatura-U${userId}EZPROXY`;
         
 
         // Gera o payload Pix
-        const payload = generatePixPayload({ pixKey, merchantName, merchantCity, transactionAmount, transactionId });
+        const payload = generatePixPayload({ pixKey, merchantName, merchantCity, transactionAmount, transactionId, description });
 
         console.log({ pixKey, merchantName, merchantCity, transactionAmount, transactionId });
         console.log(payload);
